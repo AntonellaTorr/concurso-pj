@@ -1,0 +1,89 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+
+model Ciudad {
+  id     Int    @id @default(autoincrement())
+  nombre String @unique  
+  codigo String @unique 
+ expedientes Expediente[]  
+  organismos Organismo[]
+}
+
+
+model Fuero {
+  id     Int    @id @default(autoincrement())
+  nombre String @unique  // civil, laboral
+  codigo String @unique  // ci, la
+
+  organismos Organismo[]
+}
+
+
+model Organismo {
+  codigo   String  @id  
+  nombre   String
+  titulo String
+  ciudadId Int
+  fueroId  Int
+
+  ciudad      Ciudad       @relation(fields: [ciudadId], references: [id])
+  fuero       Fuero        @relation(fields: [fueroId], references: [id])
+  expedientes Expediente[]
+}
+
+
+model Expediente {
+  codigoOrganismo String
+  tipo            String
+  numero          Int
+  anio            Int
+  titulo          String
+  ciudadId        Int
+
+  organismo Organismo           @relation(fields: [codigoOrganismo], references: [codigo])
+  ciudad    Ciudad              @relation(fields: [ciudadId], references: [id])
+  personas  ExpedientePersona[]
+
+  @@id([codigoOrganismo, tipo, numero, anio])
+}
+
+
+model Persona {
+  dni      String @id
+  apellido String
+  nombre   String
+
+  expedientes ExpedientePersona[]
+}
+
+
+model TipoVinculo {
+  id          Int    @id @default(autoincrement())
+  descripcion String @unique  // "ACTOR", "DEMANDADO", etc.
+
+  expedientePersonas ExpedientePersona[]
+}
+
+model ExpedientePersona {
+  expCodigoOrganismo String
+  expTipo            String
+  expNumero          Int
+  expAnio            Int
+  personaDni         String
+  vinculoId          Int
+
+  expediente Expediente  @relation(fields: [expCodigoOrganismo, expTipo, expNumero, expAnio], references: [codigoOrganismo, tipo, numero, anio])
+  persona    Persona     @relation(fields: [personaDni], references: [dni])
+  vinculo    TipoVinculo @relation(fields: [vinculoId], references: [id])
+
+  @@id([expCodigoOrganismo, expTipo, expNumero, expAnio, personaDni])
+}
