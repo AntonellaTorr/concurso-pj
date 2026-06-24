@@ -3,16 +3,21 @@ import { prisma } from "../prisma.js";
 
 const Router = Routes();
 
-Router.get("/", async (req, res) => {
-  try {
-    const expedientes = await prisma.expediente.findMany(); 
-    res.json(expedientes);
-  } catch (error) {
-    console.error("Error al obtener expedientes:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
-  }
-});
 
+Router.get("/", async (req, res) => {
+   const expedientes = await prisma.expediente.findMany({
+    include: {
+      ciudad: true,
+      organismo: true,
+      personas: {
+        include: {
+          persona: true,
+          vinculo: true,
+        }
+      }
+    }});
+  res.json(expedientes);
+});
 Router.get("/:codigoOrganismo/:tipo/:numero/:anio",async (req, res) => { 
     try {
         const { codigoOrganismo, tipo, numero, anio } = req.params;
@@ -184,6 +189,7 @@ Router.put("/:codigoOrganismo/:tipo/:numero/:anio", async (req, res) => {
 
 Router.delete("/:codigoOrganismo/:tipo/:numero/:anio", async (req, res) => {
   const { codigoOrganismo, tipo, numero, anio } = req.params;
+  console.log("Eliminando expediente:", { codigoOrganismo, tipo, numero, anio });
 
   try {
     await prisma.expediente.delete({
@@ -199,7 +205,12 @@ Router.delete("/:codigoOrganismo/:tipo/:numero/:anio", async (req, res) => {
 
     res.status(204).send();
 
-  } catch (error) {
+  } catch (error:any) {
+    if (error.code === 'P2003' || error.code === 'P2014') {
+      return res.status(400).json({ 
+        error: "No se puede eliminar el expediente porque está asociado a una o más personas" 
+      });
+    }
     console.error("Error al eliminar el expediente:", error);
     res.status(500).json({ error: "Error interno del servidor" });
   }

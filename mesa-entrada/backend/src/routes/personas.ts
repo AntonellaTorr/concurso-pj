@@ -70,8 +70,12 @@ router.delete("/:dni", async (req, res) => {
             where: { dni }
         });
         res.json({ message: "Persona eliminada correctamente" });
-    }catch (error) {     
-        console.error("Error al eliminar la persona:", error);
+    }catch (error:any) {     
+        if (error.code === 'P2003' || error.code === 'P2014') {
+      return res.status(400).json({ 
+        error: "No se puede eliminar la persona porque está asociada a uno o más expedientes" 
+      });
+    }
         res.status(500).json({ error: "Error interno del servidor" });
     }});
 

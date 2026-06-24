@@ -6,7 +6,12 @@ const router = Router();
 // GET /organismos
 router.get("/", async (req, res) => {
   try {
-    const organismos = await prisma.organismo.findMany();
+   const organismos = await prisma.organismo.findMany({
+  include: {
+    ciudad: true,
+    fuero: true,
+  },
+});
     res.json(organismos);
   } catch (error) {
     console.error("Error al obtener organismos:", error);
@@ -85,7 +90,12 @@ router.delete("/:codigo", async (req, res) => {
                 where: { codigo }
             });
             res.json({ message: "Organismo eliminado correctamente" });
-        } catch (error) {
+        } catch (error:any) {
+            if (error.code === 'P2003' || error.code === 'P2014') {
+            return res.status(400).json({ 
+                error: "No se puede eliminar el organismo porque está asociado a uno o más expedientes" 
+            });
+            }
             console.error("Error al eliminar el organismo:", error);
             res.status(500).json({ error: "Error interno del servidor" });
         }

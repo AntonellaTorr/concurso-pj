@@ -27,9 +27,14 @@ router.get("/", async (req, res) => {
       JOIN Fuero f ON o.fueroId = f.id
       GROUP BY f.nombre
     `;
-
-    res.json({ porAnio, porCiudad, porFuero });
-
+    res.json({ 
+    porAnio, 
+    porCiudad, 
+    porFuero: (porFuero as any[]).map(f => ({
+        nombre: f.nombre,
+        total: Number(f.total)
+    }))
+});
   } catch (error) {
     console.error("Error al obtener estadísticas:", error);
     res.status(500).json({ error: "Error interno del servidor" });
