@@ -19,6 +19,10 @@ export const updateExpediente = (org: string, tipo: string, numero: number, anio
   api.put(`/expedientes/${org}/${tipo}/${numero}/${anio}`, data).then(r => r.data);
 export const deleteExpediente = (org: string, tipo: string, numero: number, anio: number) =>
   api.delete(`/expedientes/${org}/${tipo}/${numero}/${anio}`);
+export const removePersonaFromExpediente = (
+  org: string, tipo: string, numero: number, anio: number, dni: string
+) => api.delete(`/expedientes/${org}/${tipo}/${numero}/${anio}/personas/${dni}`);
+
 export const addPersonaToExpediente = (
   org: string, tipo: string, numero: number, anio: number,
   data: { personaDni: string; vinculoId: number }

@@ -19,7 +19,7 @@ export default function Estadisticas() {
 
   if (!datos) return <div>Cargando...</div>;
 
-  // Transformar datos para Recharts
+
   const porAnio = datos.porAnio.map((d: any) => ({
     anio: d.anio,
     total: d._count.anio
@@ -39,7 +39,7 @@ export default function Estadisticas() {
     <div style={{ padding: 24 }}>
       <Title level={3}>Estadísticas</Title>
 
-      {/* Por año */}
+   
       <Title level={5} style={{ marginTop: 24 }}>Expedientes por año</Title>
       <ResponsiveContainer width="100%" height={250}>
         <BarChart data={porAnio}>
@@ -50,7 +50,7 @@ export default function Estadisticas() {
         </BarChart>
       </ResponsiveContainer>
 
-      {/* Por ciudad y fuero en dos columnas */}
+
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, marginTop: 32 }}>
 
         <div>

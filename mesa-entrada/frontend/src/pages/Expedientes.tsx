@@ -1,4 +1,4 @@
-import { getExpedientes, getOrganismos, getCiudades, createExpediente, updateExpediente, deleteExpediente, getPersonas, createPersona, getTipoVinculos } from "../api";
+import { getExpedientes, getOrganismos, getCiudades, createExpediente, updateExpediente, deleteExpediente, getPersonas, createPersona, getTipoVinculos, removePersonaFromExpediente } from "../api";
 import { useEffect, useState } from "react";
 import { Table, Button, Space, Input, Modal, Form, Select, message } from "antd";
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
@@ -163,10 +163,34 @@ export default function Expedientes() {
     }
   };
 
+  const handleEliminarPersonaDeExpediente = async (dni: string) => {
+    try {
+      await removePersonaFromExpediente(
+        expedienteSeleccionado.codigoOrganismo,
+        expedienteSeleccionado.tipo,
+        expedienteSeleccionado.numero,
+        expedienteSeleccionado.anio,
+        dni
+      );
+      message.success("Persona eliminada del expediente");
+      cargarExpedientes();
+      
+      const actualizados = await import("../api").then(api => api.getExpedientes());
+      const actualizado = actualizados.find((e: any) =>
+        e.codigoOrganismo === expedienteSeleccionado.codigoOrganismo &&
+        e.tipo === expedienteSeleccionado.tipo &&
+        e.numero === expedienteSeleccionado.numero &&
+        e.anio === expedienteSeleccionado.anio
+      );
+      if (actualizado) setExpedienteSeleccionado(actualizado);
+    } catch (error: any) {
+      message.error(error.response?.data?.error ?? "Error al eliminar persona");
+    }
+  };
+
   const handleAgregarPersonaAExpediente = async () => {
     try {
       const valores = await formAgregarPersona.validateFields();
-      // llamada al endpoint de agregar persona a expediente
       const { addPersonaToExpediente } = await import("../api");
       await addPersonaToExpediente(
         expedienteSeleccionado.codigoOrganismo,
@@ -388,6 +412,19 @@ export default function Expedientes() {
             {
               title: "Vínculo",
               render: (_: any, r: any) => r.vinculo.descripcion
+            },
+            {
+              title: "",
+              render: (_: any, r: any) =>
+                r.vinculo.descripcion !== "ACTOR" ? (
+                  <Button
+                    size="small"
+                    danger
+                    onClick={() => handleEliminarPersonaDeExpediente(r.personaDni)}
+                  >
+                    Eliminar
+                  </Button>
+                ) : null
             }
           ]}
           pagination={false}

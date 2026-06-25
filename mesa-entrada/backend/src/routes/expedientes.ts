@@ -263,4 +263,50 @@ Router.get("/:codigoOrganismo/:tipo/:numero/:anio/personas", async (req, res) =>
     }
 });
 
+// DELETE /expedientes/:codigoOrganismo/:tipo/:numero/:anio/personas/:dni- Elimina una persona de un expediente existente
+Router.delete("/:codigoOrganismo/:tipo/:numero/:anio/personas/:dni", async (req, res) => {
+  const { codigoOrganismo, tipo, numero, anio, dni } = req.params;
+
+  try {
+    const relacion = await prisma.expedientePersona.findUnique({
+      where: {
+        expCodigoOrganismo_expTipo_expNumero_expAnio_personaDni: {
+          expCodigoOrganismo: codigoOrganismo,
+          expTipo: tipo,
+          expNumero: parseInt(numero),
+          expAnio: parseInt(anio),
+          personaDni: dni
+        }
+      },
+      include: { vinculo: true }
+    });
+
+    if (!relacion) {
+      return res.status(404).json({ error: "La persona no está asociada a este expediente" });
+    }
+
+    if (relacion.vinculo.descripcion === "ACTOR") {
+      return res.status(400).json({ error: "No se puede eliminar al actor principal del expediente" });
+    }
+
+    await prisma.expedientePersona.delete({
+      where: {
+        expCodigoOrganismo_expTipo_expNumero_expAnio_personaDni: {
+          expCodigoOrganismo: codigoOrganismo,
+          expTipo: tipo,
+          expNumero: parseInt(numero),
+          expAnio: parseInt(anio),
+          personaDni: dni
+        }
+      }
+    });
+
+    res.status(204).send();
+
+  } catch (error) {
+    console.error("Error al eliminar persona del expediente:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
+
 export default Router;
