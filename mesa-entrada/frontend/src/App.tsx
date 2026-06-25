@@ -4,7 +4,6 @@ import { ConfigProvider, Layout, Menu } from 'antd';
 import {
   HomeOutlined,
   FileOutlined,
-  PlusOutlined,
   UserOutlined,
   BankOutlined,
   BarChartOutlined,

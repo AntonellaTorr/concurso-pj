@@ -19,11 +19,16 @@ router.get("/:dni", async (req, res) => {
     try {
         const persona = await prisma.persona.findUnique({
             where: { dni }
-        });     
+        });
+        if (!persona) {
+            return res.status(404).json({ error: "Persona no encontrada" });
+        }
+        res.json(persona);
     } catch (error) {
         console.error("Error al obtener la persona:", error);
         res.status(500).json({ error: "Error interno del servidor" });
-    }});
+    }
+});
 
 router.post("/", async (req, res) => {
     const { dni, nombre, apellido } = req.body; 
