@@ -96,6 +96,7 @@ Esto levanta backend en `http://localhost:3000` y frontend en `http://localhost:
 | DELETE | `/expedientes/:org/:tipo/:nro/:anio` | Eliminar |
 | GET | `/expedientes/:org/:tipo/:nro/:anio/personas` | Personas del expediente |
 | POST | `/expedientes/:org/:tipo/:nro/:anio/personas` | Agregar persona al expediente |
+| DELETE | `/expedientes/:org/:tipo/:nro/:anio/personas/:dni` | Eliminar persona del expediente (no aplica al actor) |
 
 ### Personas
 | Método | Ruta | Descripción |
