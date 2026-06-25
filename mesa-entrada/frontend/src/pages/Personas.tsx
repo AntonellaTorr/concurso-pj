@@ -6,9 +6,9 @@ import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
 export default function Personas() {
 
     const columns = [
-        { title: "Dni", dataIndex: "dni", key: "dni" },
-        { title: "Nombre", dataIndex: "nombre", key: "nombre" },
-        { title: "Apellido", dataIndex: "apellido", key: "apellido" },
+        { title: "DNI", dataIndex: "dni", key: "dni", sorter: (a: any, b: any) => a.dni.localeCompare(b.dni) },
+        { title: "Nombre", dataIndex: "nombre", key: "nombre", sorter: (a: any, b: any) => a.nombre.localeCompare(b.nombre) },
+        { title: "Apellido", dataIndex: "apellido", key: "apellido", sorter: (a: any, b: any) => a.apellido.localeCompare(b.apellido) },
         {
             title: "Acciones",
             key: "acciones",

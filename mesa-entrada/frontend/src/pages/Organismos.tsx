@@ -6,11 +6,11 @@ import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
 export default function Organismos() {
 
     const columns = [
-        { title: "Código", dataIndex: "codigo", key: "codigo" },
-        { title: "Nombre", dataIndex: "nombre", key: "nombre" },
-        { title: "Título", dataIndex: "titulo", key: "titulo" },
-        { title: "Ciudad", dataIndex: ["ciudad", "nombre"], key: "ciudad" },
-        { title: "Fuero", dataIndex: ["fuero", "nombre"], key: "fuero" },
+        { title: "Código", dataIndex: "codigo", key: "codigo", sorter: (a: any, b: any) => a.codigo.localeCompare(b.codigo) },
+        { title: "Nombre", dataIndex: "nombre", key: "nombre", sorter: (a: any, b: any) => a.nombre.localeCompare(b.nombre) },
+        { title: "Título", dataIndex: "titulo", key: "titulo", sorter: (a: any, b: any) => a.titulo.localeCompare(b.titulo) },
+        { title: "Ciudad", dataIndex: ["ciudad", "nombre"], key: "ciudad", sorter: (a: any, b: any) => a.ciudad?.nombre.localeCompare(b.ciudad?.nombre) },
+        { title: "Fuero", dataIndex: ["fuero", "nombre"], key: "fuero", sorter: (a: any, b: any) => a.fuero?.nombre.localeCompare(b.fuero?.nombre) },
         {
             title: "Acciones",
             key: "acciones",

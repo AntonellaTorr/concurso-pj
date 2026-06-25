@@ -10,11 +10,12 @@ export default function Expedientes() {
       title: "Clave",
       key: "clave",
       render: (_: any, record: any) =>
-        `${record.codigoOrganismo} ${record.tipo} ${record.numero}/${record.anio}`
+        `${record.codigoOrganismo} ${record.tipo} ${record.numero}/${record.anio}`,
+      sorter: (a: any, b: any) => `${a.codigoOrganismo}${a.tipo}${a.numero}${a.anio}`.localeCompare(`${b.codigoOrganismo}${b.tipo}${b.numero}${b.anio}`)
     },
-    { title: "Título", dataIndex: "titulo", key: "titulo" },
-    { title: "Ciudad", dataIndex: ["ciudad", "nombre"], key: "ciudad" },
-    { title: "Año", dataIndex: "anio", key: "anio" },
+    { title: "Título", dataIndex: "titulo", key: "titulo", sorter: (a: any, b: any) => a.titulo.localeCompare(b.titulo) },
+    { title: "Ciudad", dataIndex: ["ciudad", "nombre"], key: "ciudad", sorter: (a: any, b: any) => a.ciudad?.nombre.localeCompare(b.ciudad?.nombre) },
+    { title: "Año", dataIndex: "anio", key: "anio", sorter: (a: any, b: any) => a.anio - b.anio },
     {
       title: "Actor principal",
       key: "actor",
@@ -174,7 +175,7 @@ export default function Expedientes() {
       );
       message.success("Persona eliminada del expediente");
       cargarExpedientes();
-      
+
       const actualizados = await import("../api").then(api => api.getExpedientes());
       const actualizado = actualizados.find((e: any) =>
         e.codigoOrganismo === expedienteSeleccionado.codigoOrganismo &&
@@ -223,7 +224,11 @@ export default function Expedientes() {
 
   const expedientesFiltrados = expedientes.filter((e: any) =>
     e.titulo?.toLowerCase().includes(busqueda.toLowerCase()) ||
-    e.codigoOrganismo?.toLowerCase().includes(busqueda.toLowerCase())
+    e.codigoOrganismo?.toLowerCase().includes(busqueda.toLowerCase()) ||
+    e.anio?.toString().includes(busqueda) ||
+    e.numero?.toString().includes(busqueda) ||
+    e.tipo?.toLowerCase().includes(busqueda.toLowerCase()) ||
+    e.ciudad?.nombre?.toLowerCase().includes(busqueda.toLowerCase()) 
   );
 
   const vinculosSinActor = vinculos.filter((v: any) => v.descripcion !== "ACTOR");
@@ -232,7 +237,7 @@ export default function Expedientes() {
     <div>
       <Space style={{ marginBottom: 16, display: 'flex', justifyContent: 'space-between' }}>
         <Input
-          placeholder="Buscar por título u organismo..."
+         placeholder="Buscar por título, organismo, tipo, número, año o ciudad..."
           prefix={<SearchOutlined />}
           value={busqueda}
           onChange={e => setBusqueda(e.target.value)}
