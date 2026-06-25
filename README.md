@@ -2,6 +2,18 @@
 
 Aplicación fullstack para el registro y gestión de expedientes judiciales, desarrollada para el Concurso Programador/a de Aplicaciones Informáticas MF7.
 
+
+---
+
+## Demo
+
+| | URL |
+|---|---|
+| Frontend | https://concurso-pj.vercel.app |
+| Backend | https://mesa-entradapj.onrender.com |
+
+> **Nota**: el backend está hosteado en Render con tier gratuito, por lo que puede tardar hasta 1 minuto en responder si estuvo inactivo.
+
 ---
 
 ## Tecnologías

@@ -110,14 +110,17 @@ export default function Organismos() {
 
     const organismosFiltrados = organismos.filter((o: any) =>
         o.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-        o.codigo.toLowerCase().includes(busqueda.toLowerCase())
+        o.codigo.toLowerCase().includes(busqueda.toLowerCase()) ||
+        o.titulo.toLowerCase().includes(busqueda.toLowerCase()) ||
+        o.ciudad?.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
+        o.fuero?.nombre.toLowerCase().includes(busqueda.toLowerCase())
     );
 
     return (
         <div>
             <Space style={{ marginBottom: 16, display: 'flex', justifyContent: 'space-between' }}>
                 <Input
-                    placeholder="Buscar por nombre o código..."
+                    placeholder="Buscar por nombre, código, título, ciudad o fuero..."
                     prefix={<SearchOutlined />}
                     value={busqueda}
                     onChange={e => setBusqueda(e.target.value)}
