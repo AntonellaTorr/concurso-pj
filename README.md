@@ -72,15 +72,19 @@ npm install
 npm run dev       # inicia en http://localhost:5173
 ```
 
+
 ### Con Docker (alternativa)
 
-Requiere Docker y Docker Compose instalados.
+Requiere Docker Desktop instalado y corriendo.
 
 ```bash
-docker compose up --build
+cd mesa-entrada
+docker compose up --build   # primera vez (construye las imágenes)
+docker compose up           # siguientes veces
+docker compose down         # para detener
 ```
 
-Esto levanta backend en `http://localhost:3000` y frontend en `http://localhost:5173`. El seed se ejecuta automáticamente al construir la imagen del backend. La base de datos SQLite se persiste en `backend/dev.db` mediante un volumen.
+Esto levanta backend en `http://localhost:3000` y frontend en `http://localhost:5173`. El seed se ejecuta automáticamente al iniciar el contenedor del backend. La base de datos SQLite se persiste en `backend/dev.db` mediante un volumen.
 
 ---
 
