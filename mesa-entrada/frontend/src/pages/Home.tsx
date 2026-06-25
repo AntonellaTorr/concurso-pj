@@ -1,6 +1,7 @@
 import { Card, Typography, Row, Col } from 'antd';
-import { FileOutlined, UserOutlined, BarChartOutlined, AuditOutlined } from '@ant-design/icons';
+import { FileOutlined, UserOutlined, BarChartOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import pjGif from '../assets/pj.gif';
 
 const { Title, Text } = Typography;
 
@@ -10,9 +11,7 @@ export default function Home() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', padding: 40 }}>
 
-      <div style={{ width: 72, height: 72, borderRadius: '50%', background: '#E6F1FB', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
-        <AuditOutlined style={{ fontSize: 36, color: '#185FA5' }} />
-      </div>
+      <img src={pjGif} alt="Poder Judicial Neuquén" style={{ width: 72, height: 72, objectFit: 'contain', marginBottom: 20 }} />
 
       <Title level={2} style={{ textAlign: 'center', marginBottom: 4 }}>
         Mesa de Entradas Virtual

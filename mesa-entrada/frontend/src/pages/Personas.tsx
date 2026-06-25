@@ -145,7 +145,10 @@ export default function Personas() {
                 okText="Guardar"
                 cancelText="Cancelar"
             >
-                {!editando && (
+               
+
+                <Form form={form} layout="vertical">
+                     {!editando && (
                     <Form.Item
                         label="DNI"
                         name="dni"
@@ -154,8 +157,6 @@ export default function Personas() {
                         <Input placeholder="12345678" />
                     </Form.Item>
                 )}
-
-                <Form form={form} layout="vertical">
                     <Form.Item label="Nombre" name="nombre" rules={editando ? [] : [{ required: true, message: 'Ingresá el nombre' }]}>
                         <Input placeholder="Noelia" />
                     </Form.Item>

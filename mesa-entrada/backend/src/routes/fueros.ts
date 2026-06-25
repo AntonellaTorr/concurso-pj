@@ -3,6 +3,7 @@ import { prisma } from "../prisma.js";
 
 const router = Routes();
 
+// GET /fueros
 router.get("/", async (req, res) => {
     try {
         const fueros = await prisma.fuero.findMany();    
@@ -13,6 +14,7 @@ router.get("/", async (req, res) => {
     }
 });
 
+// GET /fueros/:id
 router.get("/:id", async (req, res) => {        
     try {
         const { id } = req.params;

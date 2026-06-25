@@ -61,19 +61,17 @@ router.post("/", async (req, res) => {
 //PUT /organismos/:codigo
 router.put("/:codigo", async (req, res) => {
     const { codigo } = req.params;
-    const { nombre, titulo, ciudadId, fueroId } = req.body;
+    const { nombre, titulo } = req.body;
 
-    const ciudad= await prisma.ciudad.findUnique({ where: { id: ciudadId } });
-    const fuero= await prisma.fuero.findUnique({ where: { id: fueroId } });     
-    
-    if (!ciudad || !fuero) {
-      return res.status(400).json({ error: "Ciudad o fuero no válido" });
-    }       
+    const organismoExistente = await prisma.organismo.findUnique({ where: { codigo } });
+    if (!organismoExistente) {
+        return res.status(404).json({ error: "Organismo no encontrado" });
+    }
 
 try { 
     await prisma.organismo.update({
         where: { codigo },
-        data: { nombre, titulo, ciudadId, fueroId },
+        data: { nombre, titulo},
     });
     res.json({ message: "Organismo actualizado correctamente" });
   } catch (error) {

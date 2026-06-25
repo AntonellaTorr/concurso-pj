@@ -3,6 +3,7 @@ import { prisma } from "../prisma.js";
 
 const router = Routes();
 
+// GET /ciudades
 router.get("/", async (req, res) => {
     try {
         const ciudades = await prisma.ciudad.findMany();    
@@ -12,7 +13,7 @@ router.get("/", async (req, res) => {
         res.status(500).json({ error: "Error interno del servidor" });
     }
 });
-
+// GET /ciudades/:id
 router.get("/:id", async (req, res) => {    
     try {
         const { id } = req.params;
