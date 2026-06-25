@@ -136,9 +136,15 @@ Esto levanta backend en `http://localhost:3000` y frontend en `http://localhost:
 
 **Datos iniciales**: El seed carga 8 organismos (combinando 3 ciudades × 4 fueros), 8 personas y 30 expedientes distribuidos entre todos los organismos, para que los listados y estadísticas tengan datos representativos desde el primer arranque.
 
+**Prisma como ORM**: Se eligió Prisma por familiaridad previa con la herramienta. Ofrece tipado fuerte integrado con TypeScript, lo que reduce errores en tiempo de desarrollo y mejora la experiencia con autocompletado. El esquema centralizado en `schema.prisma` facilita entender el modelo de datos de un vistazo. Además, Prisma maneja las relaciones entre tablas de forma declarativa, genera el cliente tipado automáticamente a partir del esquema, y provee soporte nativo para transacciones
+
 **SQLite con libsql**: Se eligió SQLite por practicidad y portabilidad (un solo archivo `dev.db`, sin servidor de base de datos externo). Se usa el adaptador `@prisma/adapter-libsql` compatible con Prisma 7.
 
 **Recharts para estadísticas**: Se eligió Recharts por su integración natural con React y su compatibilidad con Ant Design, evitando conflictos de estilos.
+
+**Una persona, un vínculo por expediente**: La clave primaria de `ExpedientePersona` no incluye el `vinculoId`, por lo que una misma persona no puede aparecer dos veces en el mismo expediente con vínculos distintos. El enunciado no lo especifica, y se optó por esta restricción para simplificar el modelo y evitar ambigüedades.
+
+**Integridad referencial**: No se permite eliminar una persona que esté vinculada a uno o más expedientes, ni un organismo que tenga expedientes asociados, ni un expediente que tenga personas vinculadas. El backend detecta el error de clave foránea de Prisma (códigos `P2003`/`P2014`) y devuelve un mensaje claro al frontend en lugar de un error genérico.
 
 ---
 
