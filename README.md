@@ -58,7 +58,7 @@ mesa-entrada/
 ### Backend
 
 ```bash
-cd backend
+cd mesa-entrada/backend
 npm install
 npm run seed      # carga datos ficticios (30 expedientes, personas, organismos)
 npm run dev       # inicia el servidor en http://localhost:3000
@@ -67,7 +67,7 @@ npm run dev       # inicia el servidor en http://localhost:3000
 ### Frontend
 
 ```bash
-cd frontend
+cd mesa-entrada/frontend
 npm install
 npm run dev       # inicia en http://localhost:5173
 ```
